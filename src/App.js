@@ -34,7 +34,7 @@ Amplify.configure(config);
 function App() {
   // For midway authentication
   const [user, setUser] = useState(null);
-
+  // For midway authentication: use effect
   useEffect(() => {
     Hub.listen("auth", ({ payload: { event, data } }) => {
       switch (event) {
@@ -53,7 +53,7 @@ function App() {
     });
     getUser().then((userData) => setUser(userData));
   }, []);
-
+  // For midway authentication: Get user
   function getUser() {
     return Auth.currentAuthenticatedUser()
       .then((userData) => userData)
@@ -70,6 +70,9 @@ function App() {
   const [serviceteam, setServiceteam] = useState('');
   const [use, setUse] = useState(''); 
 
+
+  // For signin and out button
+  const { tokens } = useTheme();
 
   // Table Theme
   const theme: Theme = {
@@ -97,18 +100,53 @@ function App() {
     },
   };
 
-  // For signin and out button
-  const { tokens } = useTheme();
 
-  // For Gobj
+  // For Gobjs
   const [gobjs, setGobjs] = useState([]);
-  // const [formData, setFormData] = useState(initialFormState);
-
-  // useEffect(() => {
-  //   fetchGobjs();
-  // }, []);
 
   // Fetch the gobjs in the table
+  async function fetchGobjs(){
+    const headers = {
+      "Content-Type": "application, json",
+    }
+    const apiResponse = await fetch('https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v2/read', {headers} )
+    const apiResponseJSON = await apiResponse.json()
+    const gs = apiResponseJSON.body
+    // console.log(apiResponseJSON)
+    console.log(gs)
+    setGobjs([...gs])
+  }
+  // Fetch the gobjs in the table: UseEffect
+  useEffect(() => { 
+    async function fetc(){
+      const headers = {
+        "Content-Type": "application, json",
+      }
+      const apiResponse = await fetch('https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v2/read', {headers} )
+      const apiResponseJSON = await apiResponse.json()
+      const gs = apiResponseJSON.body
+      // console.log(apiResponseJSON)
+      console.log("This is gs: " + gs)
+      setGobjs([...gs])
+      // Trying to sort the array of objects
+      console.log("This is gobjs: " + gobjs);
+      console.log("Sorted gobjs: " + sortObject(gobjs));
+      console.log(Object.entries(gobjs))
+      console.log(Object.entries(gobjs).sort((a,b) => {return a.created_at - b.created_at} ))
+    }
+    fetc()
+  }, []);
+
+  // Trying to sort the gobjs
+  const sortObject = obj => {
+    const arr = Object.keys(obj).map(el => {
+       return obj[el];
+    });
+    arr.sort((a, b) => {
+       return a - b;
+    });
+    return arr;
+  };
 
   // Creating gobjs
   async function createGobj() {
@@ -124,7 +162,8 @@ function App() {
                                winloss: winloss,
                                priority: priority,
                                serviceteam: serviceteam,
-                               user: user.username
+                              //  user: user.username
+                              user: 'testUser'
                               });
     // create a JSON object with parameters for API call and store in a variable
     var requestOptions = {
@@ -134,17 +173,48 @@ function App() {
       redirect: "follow",
     };
     // make API call with parameters and use promises to get response
-    fetch(
+    await fetch(
       "https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v0/put",
       requestOptions
     )
       .then((response) => response.text())
       // .then((result) => alert(JSON.parse(result).body))
       .catch((error) => console.log("error", error));
-    
+    setCustomer('');
+    setService('');
+    setClaim('');
+    setWinloss('');
+    setPriority('');
+    setServiceteam('');
+    fetchGobjs();
   };
 
-  // Deleting gobjs
+
+  // Delete gobj
+  async function deleteGobj({gobj}){
+    console.log(gobj.id);
+    // instantiate a headers object
+    var myHeaders = new Headers();
+    // add content type header to object
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({ id: gobj.id });
+    // create a JSON object with parameters for API call and store in a variable
+    var requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+  // make API call with parameters and use promises to get response
+  await fetch(
+    "https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v1/delete",
+    requestOptions
+  )
+    .then((response) => response.text())
+    // .then((result) => alert(JSON.parse(result).body))
+    .catch((error) => console.log("error", error));
+  fetchGobjs();
+  };
 
   // Editing gobj
 
@@ -206,11 +276,17 @@ function App() {
           </div>
           <Heading level={1}>Dashboard</Heading>
 
+          {/* <button onClick={() => fetchGobjs()}>FETCH</button> */}
+
+
           <div className="tableDiv">
             <ThemeProvider theme={theme} colorMode="light">
               <Table highlightOnHover variation="striped">
                 <TableHead>
                   <TableRow>
+                    <TableCell>
+                      <b>User</b>
+                    </TableCell>
                     <TableCell className="theadCell">
                       <b>Customer, SA, <i>Gap</i></b>
                     </TableCell>
@@ -243,6 +319,10 @@ function App() {
                 <TableBody>
 
                 <TableRow>
+                  {/* User */}
+                  <TableCell>
+                      <b>USER FILLER</b>
+                    </TableCell>
                   <TableCell>
                     {/* Customer */}
                     <TextareaAutosize
@@ -354,7 +434,63 @@ function App() {
                     </div>
                   </TableCell>
                 </TableRow>
-  
+
+
+
+                {/* Mapping the gobjs */}
+                {
+                (gobjs.length > 0)?  
+                (
+                  gobjs.map((gobj) => (
+                  <>
+                    <TableRow key={gobj.id}>
+                      <TableCell fontSize="var(--amplify-font-sizes-small)">
+                        {gobj.user}
+                        <br/>
+                        <br/>
+                        {gobj.created_at.slice(0,-5)}
+                      </TableCell>
+                      <TableCell fontSize="var(--amplify-font-sizes-small)">
+                        {gobj.customer}
+                      </TableCell>
+                      <TableCell fontSize="var(--amplify-font-sizes-small)">
+                        {gobj.service}
+                      </TableCell>
+                      <TableCell fontSize="var(--amplify-font-sizes-small)">
+                        {gobj.claim}
+                      </TableCell>
+                      <TableCell fontSize="var(--amplify-font-sizes-small)">
+                        {gobj.winloss}
+                      </TableCell>
+                      <TableCell fontSize="var(--amplify-font-sizes-small)">
+                        {gobj.priority}
+                      </TableCell>
+                      <TableCell fontSize="var(--amplify-font-sizes-small)">
+                        {gobj.serviceteam}
+                      </TableCell>
+                      <TableCell fontSize="var(--amplify-font-sizes-small)">
+                        <div>
+                          {/* <Button onClick={() => change(gobj)}>EDIT</Button> */}
+                        </div>
+                        <div className='deletIconDiv'>
+                          <AiTwotoneDelete
+                            className="deleteIcon"
+                            onDoubleClick={() => deleteGobj({gobj})}
+                          />
+                        </div> 
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ))
+                ):
+                (
+                  <>
+                  <TableRow>
+                   <TableCell colSpan='8'>There is no data in this dashboard.</TableCell>
+                  </TableRow>
+                  </>
+                )}
+
                 </TableBody>
               </Table>
             </ThemeProvider>
