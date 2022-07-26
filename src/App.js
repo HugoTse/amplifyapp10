@@ -216,17 +216,88 @@ function App() {
   fetchGobjs();
   };
 
+
   // Editing gobj
+  async function editGobj(gobj) {
+    console.log(editid);
+    console.log('id: ' + gobj.id,
+                'Customer: ' + customer, 
+                'Service: ' + service, 
+                'Claim: ' + claim, 
+                'Win/Loss: ' + winloss, 
+                'Priority: ' + priority,
+                'Service Team: ' + serviceteam,
+                'Created At: ' + gobj.created_at,
+                'User: ' + 'testUser')
+    // Check if input is empty
+    // if(customer == ''){
+    //   setCustomer(gobj.customer);
+    //   console.log('No customer!');
+    // }
+    // if(service == ''){
+    //   setService(gobj.service);
+    // }
+    // if(claim == ''){
+    //   setClaim(gobj.claim);
+    // }
+    // if(winloss == ''){
+    //   setWinloss(gobj.winloss);
+    // }
+    // if(priority == ''){
+    //   setPriority(gobj.priority);
+    // }
+    // if(serviceteam == ''){
+    //   setServiceteam(gobj.serviceteam);
+    // }
+    // instantiate a headers object
+    var myHeaders = new Headers();
+    // add content type header to object
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({ id: gobj.id,
+                               customer: customer, 
+                               service: service,
+                               claim: claim,
+                               winloss: winloss,
+                               priority: priority,
+                               serviceteam: serviceteam,
+                               created_at: gobj.created_at,
+                               //  user: user.username
+                               user: 'testUser'
+                              });
+    // create a JSON object with parameters for API call and store in a variable
+    var requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    // make API call with parameters and use promises to get response
+    await fetch(
+      "https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v0/put",
+      requestOptions
+    )
+    .then((response) => response.text())
+    // .then((result) => alert(JSON.parse(result).body))
+    .catch((error) => console.log("error", error));
+    setCustomer('');
+    setService('');
+    setClaim('');
+    setWinloss('');
+    setPriority('');
+    setServiceteam('');
+    fetchGobjs();
+  };
+
 
   // Adding
   const [adding, setAdding] = useState(false);
 
   async function changeAdding() {
-    if (adding == false) {
-      if (editid != "") {
-        setEditid("");
-      }
-    }
+    // if (adding == false) {
+    //   if (editid != "") {
+    //     setEditid("");
+    //   }
+    // }
     // Change the adding variable
     setAdding(!adding);
   }
@@ -234,7 +305,9 @@ function App() {
   // Editing
   const [editid, setEditid] = useState("");
 
-  async function change({ id }) {
+  async function change({ gobj }) {
+    setEditid(gobj.id);
+    console.log('1st gobj.id: ' + gobj.id)
     // Establishing user identity
     // setFormData({...formData, user: user.username, });
     // console.log(formData.user.username);
@@ -242,25 +315,20 @@ function App() {
     if (adding) {
       setAdding(false);
     }
-    setEditid(id);
-    console.log(editid);
-    // Adding fetch after setting the change id
-    setTimeout(function(){
-      console.log("I am the third log after 5 seconds");
-      // fetchGobjs();
-    },1000);
+    console.log('The editid is now: ' + editid);
+    fetchGobjs();
   }
 
   async function clear() {
     // setFormData(initialFormState);
     setAdding(false);
-    setEditid("");
+    setEditid('');
   }
 
   // Controlling who can edit and delete
-  async function showUser() {
-    console.log(user);
-  }
+  // async function showUser() {
+  //   console.log(user);
+  // }
 
   return (
     <div className="App">
@@ -318,6 +386,8 @@ function App() {
 
                 <TableBody>
 
+                {adding ?
+                (<>
                 <TableRow>
                   {/* User */}
                   <TableCell>
@@ -434,8 +504,8 @@ function App() {
                     </div>
                   </TableCell>
                 </TableRow>
-
-
+                </>):
+                (<></>)}
 
                 {/* Mapping the gobjs */}
                 {
@@ -470,7 +540,7 @@ function App() {
                       </TableCell>
                       <TableCell fontSize="var(--amplify-font-sizes-small)">
                         <div>
-                          <Button onClick={() => change(gobj)}>EDIT</Button>
+                          <Button onClick={() => change({gobj})}>EDIT</Button>
                         </div>
                         <div className='deletIconDiv'>
                           <AiTwotoneDelete
@@ -581,7 +651,7 @@ function App() {
                         <div>
                           <Button
                             loadingText=""
-                            onClick={() => createGobj()}
+                            onClick={() => editGobj({gobj})}
                             ariaLabel=""
                             className="submitAndCancel"
                           >
