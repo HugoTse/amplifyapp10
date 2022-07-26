@@ -470,7 +470,7 @@ function App() {
                       </TableCell>
                       <TableCell fontSize="var(--amplify-font-sizes-small)">
                         <div>
-                          {/* <Button onClick={() => change(gobj)}>EDIT</Button> */}
+                          <Button onClick={() => change(gobj)}>EDIT</Button>
                         </div>
                         <div className='deletIconDiv'>
                           <AiTwotoneDelete
@@ -478,6 +478,126 @@ function App() {
                             onDoubleClick={() => deleteGobj({gobj})}
                           />
                         </div> 
+                      </TableCell>
+                    </TableRow>
+                    
+                    {/* Row for editing */}
+                    <TableRow>
+                      {/* User */}
+                      <TableCell>
+                        {gobj.user}
+                          <br/>
+                          <br/>
+                        </TableCell>
+                      <TableCell>
+                        {/* Customer */}
+                        <TextareaAutosize
+                            className='responsiveTA'
+                            // defaultValue={}
+                            placeholder="..."
+                            onChange={(e) =>
+                              setCustomer(e.target.value)
+                            }
+                            defaultValue={gobj.customer}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        {/* Service */}
+                        <TextareaAutosize
+                              className='responsiveTA'
+                              // defaultValue={}
+                              placeholder="..."
+                              onChange={(e) =>
+                                setService(e.target.value)
+                              }
+                              defaultValue={gobj.service}
+                          />
+                      </TableCell>
+                      <TableCell>
+                        {/* Claim */}
+                        <TextareaAutosize
+                            className='responsiveTA'
+                            // defaultValue={}
+                            placeholder="..."
+                            onChange={(e) =>
+                              setClaim(e.target.value)
+                            }
+                            defaultValue={gobj.claim}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        {/* Win/Loss */}
+                        <TextareaAutosize
+                          className='responsiveTA'
+                          // defaultValue={}
+                          placeholder="..."
+                          onChange={(e) =>
+                            setWinloss(e.target.value)
+                          }
+                          defaultValue={gobj.winloss}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <SelectField
+                          placeholder="Select"
+                          value={priority}
+                          onChange={(e) =>
+                            setPriority(e.target.value)
+                          }
+                        >
+                          <option
+                            value="Priority: High"
+                            fontSize="var(--amplify-font-sizes-small)"
+                          >
+                            High
+                          </option>
+                          <option
+                            value="Priority: Medium"
+                            fontSize="var(--amplify-font-sizes-small)"
+                          >
+                            Medium
+                          </option>
+                          <option
+                            value="Priority: Low"
+                            fontSize="var(--amplify-font-sizes-small)"
+                          >
+                            Low
+                          </option>
+                        </SelectField>
+                      </TableCell>
+                      <TableCell>
+                        {/* Service Team */}
+                        <TextareaAutosize
+                          className='responsiveTA'
+                          // defaultValue={}
+                          placeholder="..."
+                          onChange={(e) =>
+                            setServiceteam(e.target.value)
+                          }
+                          defaultValue={gobj.serviceteam}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <Button
+                            loadingText=""
+                            onClick={() => createGobj()}
+                            ariaLabel=""
+                            className="submitAndCancel"
+                          >
+                            Submit
+                          </Button>
+                        </div>
+                        <div>
+                          <Button
+                            loadingText=""
+                            onClick={() => clear()}
+                            ariaLabel=""
+                            className="submitAndCancel"
+                          >
+                            Cancel
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   </>
