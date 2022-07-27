@@ -74,6 +74,7 @@ function App() {
   // For signin and out button
   const { tokens } = useTheme();
 
+
   // Table Theme
   const theme: Theme = {
     name: "table-theme",
@@ -126,27 +127,12 @@ function App() {
       const apiResponseJSON = await apiResponse.json()
       const gs = apiResponseJSON.body
       // console.log(apiResponseJSON)
-      console.log("This is gs: " + gs)
+      // console.log("This is gs: " + gs)
       setGobjs([...gs])
-      // Trying to sort the array of objects
-      console.log("This is gobjs: " + gobjs);
-      console.log("Sorted gobjs: " + sortObject(gobjs));
-      console.log(Object.entries(gobjs))
-      console.log(Object.entries(gobjs).sort((a,b) => {return a.created_at - b.created_at} ))
     }
     fetc()
   }, []);
 
-  // Trying to sort the gobjs
-  const sortObject = obj => {
-    const arr = Object.keys(obj).map(el => {
-       return obj[el];
-    });
-    arr.sort((a, b) => {
-       return a - b;
-    });
-    return arr;
-  };
 
   // Creating gobjs
   async function createGobj() {
@@ -177,9 +163,9 @@ function App() {
       "https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v0/put",
       requestOptions
     )
-      .then((response) => response.text())
-      // .then((result) => alert(JSON.parse(result).body))
-      .catch((error) => console.log("error", error));
+    .then((response) => response.text())
+    // .then((result) => alert(JSON.parse(result).body))
+    .catch((error) => console.log("error", error));
     setCustomer('');
     setService('');
     setClaim('');
@@ -217,48 +203,132 @@ function App() {
   };
 
 
+  // Use effect for editing fields
+  // useEffect(() => {
+  //   setCustomer(customer);
+  //   setService(service);
+  //   setClaim(claim);
+  //   setWinloss(winloss);
+  //   setPriority(priority);
+  //   setServiceteam(serviceteam);
+  //   console.log('Customer= ' + customer, 
+  //               'Service: ' + service, 
+  //               'Claim: ' + claim, 
+  //               'Winloss: ' + winloss,
+  //               'Priority: ' + priority,
+  //               'Serviceteam: ' + serviceteam);
+  // }, [customer, service, claim, winloss, priority, serviceteam]);
+
   // Editing gobj
   async function editGobj(gobj) {
     console.log(editid);
-    console.log('id: ' + gobj.id,
-                'Customer: ' + customer, 
-                'Service: ' + service, 
-                'Claim: ' + claim, 
-                'Win/Loss: ' + winloss, 
-                'Priority: ' + priority,
-                'Service Team: ' + serviceteam,
-                'Created At: ' + gobj.created_at,
-                'User: ' + 'testUser')
     // instantiate a headers object
     var myHeaders = new Headers();
     // add content type header to object
     myHeaders.append("Content-Type", "application/json");
-    var raw = JSON.stringify({ id: gobj.id,
-                               customer: customer, 
-                               service: service,
-                               claim: claim,
-                               winloss: winloss,
-                               priority: priority,
-                               serviceteam: serviceteam,
-                               created_at: gobj.created_at,
-                               //  user: user.username
-                               user: 'testUser'
-                              });
-    // create a JSON object with parameters for API call and store in a variable
-    var requestOptions = {
+    // Customer
+    if(customer != ''){
+      console.log('Customer variable not empty');
+      var rawCustomer = JSON.stringify({ id: editid, customer: customer });
+      // create a JSON object with parameters for API call and store in a variable
+      var requestOptionsCustomer = {
       method: "PUT",
       headers: myHeaders,
-      body: raw,
+      body: rawCustomer,
       redirect: "follow",
-    };
-    // make API call with parameters and use promises to get response
-    await fetch(
-      "https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v0/put",
-      requestOptions
-    )
-    .then((response) => response.text())
-    // .then((result) => alert(JSON.parse(result).body))
-    .catch((error) => console.log("error", error));
+      };
+      // make API call with parameters and use promises to get response
+      await fetch("https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v4/edit",requestOptionsCustomer)
+      .then((response) => response.text())
+      .catch((error) => console.log("error", error));
+    }
+    // Service
+    if(service != ''){
+      console.log('Service variable not empty');
+      var rawService = JSON.stringify({ id: editid, service: service });
+      // create a JSON object with parameters for API call and store in a variable
+      var requestOptionsService = {
+      method: "PUT",
+      headers: myHeaders,
+      body: rawService,
+      redirect: "follow",
+      };
+      // make API call with parameters and use promises to get response
+      await fetch("https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v4/edit",requestOptionsService)
+      .then((response) => response.text())
+      .catch((error) => console.log("error", error));
+    }
+    // Claim
+    if(claim != ''){
+      console.log('Claim variable not empty');
+      var rawClaim = JSON.stringify({ id: editid, claim: claim });
+      // create a JSON object with parameters for API call and store in a variable
+      var requestOptionsClaim = {
+      method: "PUT",
+      headers: myHeaders,
+      body: rawClaim,
+      redirect: "follow",
+      };
+      // make API call with parameters and use promises to get response
+      await fetch("https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v4/edit",requestOptionsClaim)
+      .then((response) => response.text())
+      .catch((error) => console.log("error", error));
+    }
+    // Winloss
+    if(winloss != ''){
+      console.log('Winloss variable not empty');
+      var rawWinloss = JSON.stringify({ id: editid, winloss: winloss });
+      // create a JSON object with parameters for API call and store in a variable
+      var requestOptionsWinloss = {
+      method: "PUT",
+      headers: myHeaders,
+      body: rawWinloss,
+      redirect: "follow",
+      };
+      // make API call with parameters and use promises to get response
+      await fetch("https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v4/edit",requestOptionsWinloss)
+      .then((response) => response.text())
+      .catch((error) => console.log("error", error));
+    }
+    // Priority
+    if(priority != ''){
+      console.log('Priority variable not empty');
+      var rawPriority = JSON.stringify({ id: editid, priority: priority });
+      // create a JSON object with parameters for API call and store in a variable
+      var requestOptionsPriority = {
+      method: "PUT",
+      headers: myHeaders,
+      body: rawPriority,
+      redirect: "follow",
+      };
+      // make API call with parameters and use promises to get response
+      await fetch("https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v4/edit",requestOptionsPriority)
+      .then((response) => response.text())
+      .catch((error) => console.log("error", error));
+    }
+    if(serviceteam != ''){
+      console.log('Serviceteam variable not empty');
+      var rawServiceTeam = JSON.stringify({ id: editid, serviceteam: serviceteam });
+      // create a JSON object with parameters for API call and store in a variable
+      var requestOptionsServiceteam = {
+      method: "PUT",
+      headers: myHeaders,
+      body: rawServiceTeam,
+      redirect: "follow",
+      };
+      // make API call with parameters and use promises to get response
+      await fetch("https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v4/edit",requestOptionsServiceteam)
+      .then((response) => response.text())
+      .catch((error) => console.log("error", error));
+    }
+    // console.log('id: ' + gobj.id,
+    //             'Customer: ' + customer, 
+    //             'Service: ' + service, 
+    //             'Claim: ' + claim, 
+    //             'Win/Loss: ' + winloss, 
+    //             'Priority: ' + priority,
+    //             'Service Team: ' + serviceteam,
+    //             'User: ' + 'testUser')
     setCustomer('');
     setService('');
     setClaim('');
@@ -266,28 +336,30 @@ function App() {
     setPriority('');
     setServiceteam('');
     fetchGobjs();
+    clear();
   };
 
 
   // Adding
   const [adding, setAdding] = useState(false);
-
+  // Change adding
   async function changeAdding() {
-    // if (adding == false) {
-    //   if (editid != "") {
-    //     setEditid("");
-    //   }
-    // }
-    // Change the adding variable
+    if (adding == false) {
+      if (editid != "") {
+        setEditid("");
+      }
+    }
+    // Set the adding variable
     setAdding(!adding);
   }
+
 
   // Editing
   const [editid, setEditid] = useState("");
   // Use effect for editing
   useEffect(() => {
     setEditid(editid);
-    console.log('useEffect ID = ' + editid)
+    console.log('useEffect Edit ID = ' + editid)
   }, [editid]);
   // Set the edit id
   async function change({ gobj }) {
@@ -299,6 +371,8 @@ function App() {
     fetchGobjs();
   }
 
+
+  // Clearing adding and editid
   async function clear() {
     setAdding(false);
     setEditid('');
@@ -308,7 +382,6 @@ function App() {
   // async function showUser() {
   //   console.log(user);
   // }
-
 
 
   return (
@@ -644,6 +717,7 @@ function App() {
                           {gobj.serviceteam}
                         </TableCell>
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
+                          {/* If user equals user.username */}
                           <div>
                             <Button onClick={() => change({gobj})}>EDIT</Button>
                           </div>
@@ -657,8 +731,6 @@ function App() {
                       </TableRow> 
                       </>)    
                   }
-
-                    
                   </>
                 ))
                 ):
@@ -669,12 +741,6 @@ function App() {
                   </TableRow>
                   </>
                 )}
-
-                <TableRow>
-                  <TableCell>
-                    Testing
-                  </TableCell>
-                </TableRow>
 
 
                 </TableBody>
