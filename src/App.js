@@ -671,9 +671,9 @@ function App() {
                       <TableRow key={gobj.id}>
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
                           {gobj.user}
-                          <br/>
-                          <br/>
-                          {gobj.created_at.slice(0,-5)}
+                          {/* <br/> */}
+                          {/* <br/> */}
+                          {/* {gobj.created_at.slice(0,-5)} */}
                         </TableCell>
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
                           {gobj.customer}
