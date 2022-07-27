@@ -422,7 +422,7 @@ function App() {
                 <TableRow>
                   {/* User */}
                   <TableCell>
-                      <b>USER FILLER</b>
+                      {user.username}
                     </TableCell>
                   <TableCell>
                     {/* Customer */}
@@ -644,6 +644,8 @@ function App() {
                           />
                         </TableCell>
                         <TableCell>
+                        {(gobj.user == user.username)? 
+                          (<>
                           <div>
                             <Button
                               loadingText=""
@@ -664,6 +666,7 @@ function App() {
                               Cancel
                             </Button>
                           </div>
+                          </>) : (<></>) }
                         </TableCell>
                       </TableRow>
                       </>):
