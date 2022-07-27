@@ -229,26 +229,6 @@ function App() {
                 'Service Team: ' + serviceteam,
                 'Created At: ' + gobj.created_at,
                 'User: ' + 'testUser')
-    // Check if input is empty
-    // if(customer == ''){
-    //   setCustomer(gobj.customer);
-    //   console.log('No customer!');
-    // }
-    // if(service == ''){
-    //   setService(gobj.service);
-    // }
-    // if(claim == ''){
-    //   setClaim(gobj.claim);
-    // }
-    // if(winloss == ''){
-    //   setWinloss(gobj.winloss);
-    // }
-    // if(priority == ''){
-    //   setPriority(gobj.priority);
-    // }
-    // if(serviceteam == ''){
-    //   setServiceteam(gobj.serviceteam);
-    // }
     // instantiate a headers object
     var myHeaders = new Headers();
     // add content type header to object
@@ -304,23 +284,22 @@ function App() {
 
   // Editing
   const [editid, setEditid] = useState("");
-
+  // Use effect for editing
+  useEffect(() => {
+    setEditid(editid);
+    console.log('useEffect ID = ' + editid)
+  }, [editid]);
+  // Set the edit id
   async function change({ gobj }) {
-    setEditid(gobj.id);
-    console.log('1st gobj.id: ' + gobj.id)
-    // Establishing user identity
-    // setFormData({...formData, user: user.username, });
-    // console.log(formData.user.username);
-    // Setting the id
+    const x = gobj.id;
+    setEditid(x);
     if (adding) {
       setAdding(false);
     }
-    console.log('The editid is now: ' + editid);
     fetchGobjs();
   }
 
   async function clear() {
-    // setFormData(initialFormState);
     setAdding(false);
     setEditid('');
   }
@@ -329,6 +308,8 @@ function App() {
   // async function showUser() {
   //   console.log(user);
   // }
+
+
 
   return (
     <div className="App">
@@ -513,163 +494,171 @@ function App() {
                 (
                   gobjs.map((gobj) => (
                   <>
-                    <TableRow key={gobj.id}>
-                      <TableCell fontSize="var(--amplify-font-sizes-small)">
-                        {gobj.user}
-                        <br/>
-                        <br/>
-                        {gobj.created_at.slice(0,-5)}
-                      </TableCell>
-                      <TableCell fontSize="var(--amplify-font-sizes-small)">
-                        {gobj.customer}
-                      </TableCell>
-                      <TableCell fontSize="var(--amplify-font-sizes-small)">
-                        {gobj.service}
-                      </TableCell>
-                      <TableCell fontSize="var(--amplify-font-sizes-small)">
-                        {gobj.claim}
-                      </TableCell>
-                      <TableCell fontSize="var(--amplify-font-sizes-small)">
-                        {gobj.winloss}
-                      </TableCell>
-                      <TableCell fontSize="var(--amplify-font-sizes-small)">
-                        {gobj.priority}
-                      </TableCell>
-                      <TableCell fontSize="var(--amplify-font-sizes-small)">
-                        {gobj.serviceteam}
-                      </TableCell>
-                      <TableCell fontSize="var(--amplify-font-sizes-small)">
-                        <div>
-                          <Button onClick={() => change({gobj})}>EDIT</Button>
-                        </div>
-                        <div className='deletIconDiv'>
-                          <AiTwotoneDelete
-                            className="deleteIcon"
-                            onDoubleClick={() => deleteGobj({gobj})}
-                          />
-                        </div> 
-                      </TableCell>
-                    </TableRow>
-                    
-                    {/* Row for editing */}
-                    <TableRow>
-                      {/* User */}
-                      <TableCell>
-                        {gobj.user}
-                          <br/>
-                          <br/>
-                        </TableCell>
-                      <TableCell>
-                        {/* Customer */}
-                        <TextareaAutosize
-                            className='responsiveTA'
-                            // defaultValue={}
-                            placeholder="..."
-                            onChange={(e) =>
-                              setCustomer(e.target.value)
-                            }
-                            defaultValue={gobj.customer}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        {/* Service */}
-                        <TextareaAutosize
+                  {
+                    (gobj.id == editid )?
+                      (<>
+                      {/* Row for editing */}
+                      <TableRow>
+                        {/* User */}
+                        <TableCell>
+                          {gobj.user}
+                            <br/>
+                            <br/>
+                          </TableCell>
+                        <TableCell>
+                          {/* Customer */}
+                          <TextareaAutosize
                               className='responsiveTA'
                               // defaultValue={}
                               placeholder="..."
                               onChange={(e) =>
-                                setService(e.target.value)
+                                setCustomer(e.target.value)
                               }
-                              defaultValue={gobj.service}
+                              defaultValue={gobj.customer}
                           />
-                      </TableCell>
-                      <TableCell>
-                        {/* Claim */}
-                        <TextareaAutosize
+                        </TableCell>
+                        <TableCell>
+                          {/* Service */}
+                          <TextareaAutosize
+                                className='responsiveTA'
+                                // defaultValue={}
+                                placeholder="..."
+                                onChange={(e) =>
+                                  setService(e.target.value)
+                                }
+                                defaultValue={gobj.service}
+                            />
+                        </TableCell>
+                        <TableCell>
+                          {/* Claim */}
+                          <TextareaAutosize
+                              className='responsiveTA'
+                              // defaultValue={}
+                              placeholder="..."
+                              onChange={(e) =>
+                                setClaim(e.target.value)
+                              }
+                              defaultValue={gobj.claim}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          {/* Win/Loss */}
+                          <TextareaAutosize
                             className='responsiveTA'
                             // defaultValue={}
                             placeholder="..."
                             onChange={(e) =>
-                              setClaim(e.target.value)
+                              setWinloss(e.target.value)
                             }
-                            defaultValue={gobj.claim}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        {/* Win/Loss */}
-                        <TextareaAutosize
-                          className='responsiveTA'
-                          // defaultValue={}
-                          placeholder="..."
-                          onChange={(e) =>
-                            setWinloss(e.target.value)
-                          }
-                          defaultValue={gobj.winloss}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <SelectField
-                          placeholder="Select"
-                          value={priority}
-                          onChange={(e) =>
-                            setPriority(e.target.value)
-                          }
-                        >
-                          <option
-                            value="Priority: High"
-                            fontSize="var(--amplify-font-sizes-small)"
+                            defaultValue={gobj.winloss}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <SelectField
+                            placeholder="Select"
+                            value={priority}
+                            onChange={(e) =>
+                              setPriority(e.target.value)
+                            }
                           >
-                            High
-                          </option>
-                          <option
-                            value="Priority: Medium"
-                            fontSize="var(--amplify-font-sizes-small)"
-                          >
-                            Medium
-                          </option>
-                          <option
-                            value="Priority: Low"
-                            fontSize="var(--amplify-font-sizes-small)"
-                          >
-                            Low
-                          </option>
-                        </SelectField>
-                      </TableCell>
-                      <TableCell>
-                        {/* Service Team */}
-                        <TextareaAutosize
-                          className='responsiveTA'
-                          // defaultValue={}
-                          placeholder="..."
-                          onChange={(e) =>
-                            setServiceteam(e.target.value)
-                          }
-                          defaultValue={gobj.serviceteam}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <div>
-                          <Button
-                            loadingText=""
-                            onClick={() => editGobj({gobj})}
-                            ariaLabel=""
-                            className="submitAndCancel"
-                          >
-                            Submit
-                          </Button>
-                        </div>
-                        <div>
-                          <Button
-                            loadingText=""
-                            onClick={() => clear()}
-                            ariaLabel=""
-                            className="submitAndCancel"
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
+                            <option
+                              value="Priority: High"
+                              fontSize="var(--amplify-font-sizes-small)"
+                            >
+                              High
+                            </option>
+                            <option
+                              value="Priority: Medium"
+                              fontSize="var(--amplify-font-sizes-small)"
+                            >
+                              Medium
+                            </option>
+                            <option
+                              value="Priority: Low"
+                              fontSize="var(--amplify-font-sizes-small)"
+                            >
+                              Low
+                            </option>
+                          </SelectField>
+                        </TableCell>
+                        <TableCell>
+                          {/* Service Team */}
+                          <TextareaAutosize
+                            className='responsiveTA'
+                            // defaultValue={}
+                            placeholder="..."
+                            onChange={(e) =>
+                              setServiceteam(e.target.value)
+                            }
+                            defaultValue={gobj.serviceteam}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <div>
+                            <Button
+                              loadingText=""
+                              onClick={() => editGobj({gobj})}
+                              ariaLabel=""
+                              className="submitAndCancel"
+                            >
+                              Submit
+                            </Button>
+                          </div>
+                          <div>
+                            <Button
+                              loadingText=""
+                              onClick={() => clear()}
+                              ariaLabel=""
+                              className="submitAndCancel"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                      </>):
+                      (<>
+                      <TableRow key={gobj.id}>
+                        <TableCell fontSize="var(--amplify-font-sizes-small)">
+                          {gobj.user}
+                          <br/>
+                          <br/>
+                          {gobj.created_at.slice(0,-5)}
+                        </TableCell>
+                        <TableCell fontSize="var(--amplify-font-sizes-small)">
+                          {gobj.customer}
+                        </TableCell>
+                        <TableCell fontSize="var(--amplify-font-sizes-small)">
+                          {gobj.service}
+                        </TableCell>
+                        <TableCell fontSize="var(--amplify-font-sizes-small)">
+                          {gobj.claim}
+                        </TableCell>
+                        <TableCell fontSize="var(--amplify-font-sizes-small)">
+                          {gobj.winloss}
+                        </TableCell>
+                        <TableCell fontSize="var(--amplify-font-sizes-small)">
+                          {gobj.priority}
+                        </TableCell>
+                        <TableCell fontSize="var(--amplify-font-sizes-small)">
+                          {gobj.serviceteam}
+                        </TableCell>
+                        <TableCell fontSize="var(--amplify-font-sizes-small)">
+                          <div>
+                            <Button onClick={() => change({gobj})}>EDIT</Button>
+                          </div>
+                          <div className='deletIconDiv'>
+                            <AiTwotoneDelete
+                              className="deleteIcon"
+                              onDoubleClick={() => deleteGobj({gobj})}
+                            />
+                          </div> 
+                        </TableCell>
+                      </TableRow> 
+                      </>)    
+                  }
+
+                    
                   </>
                 ))
                 ):
@@ -680,6 +669,13 @@ function App() {
                   </TableRow>
                   </>
                 )}
+
+                <TableRow>
+                  <TableCell>
+                    Testing
+                  </TableCell>
+                </TableRow>
+
 
                 </TableBody>
               </Table>
