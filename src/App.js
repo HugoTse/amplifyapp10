@@ -148,8 +148,8 @@ function App() {
                                winloss: winloss,
                                priority: priority,
                                serviceteam: serviceteam,
-                              //  user: user.username
-                              user: 'testUser'
+                               user: user.username
+                              // user: 'testUser'
                               });
     // create a JSON object with parameters for API call and store in a variable
     var requestOptions = {
@@ -202,22 +202,6 @@ function App() {
   fetchGobjs();
   };
 
-
-  // Use effect for editing fields
-  // useEffect(() => {
-  //   setCustomer(customer);
-  //   setService(service);
-  //   setClaim(claim);
-  //   setWinloss(winloss);
-  //   setPriority(priority);
-  //   setServiceteam(serviceteam);
-  //   console.log('Customer= ' + customer, 
-  //               'Service: ' + service, 
-  //               'Claim: ' + claim, 
-  //               'Winloss: ' + winloss,
-  //               'Priority: ' + priority,
-  //               'Serviceteam: ' + serviceteam);
-  // }, [customer, service, claim, winloss, priority, serviceteam]);
 
   // Editing gobj
   async function editGobj(gobj) {
@@ -321,14 +305,6 @@ function App() {
       .then((response) => response.text())
       .catch((error) => console.log("error", error));
     }
-    // console.log('id: ' + gobj.id,
-    //             'Customer: ' + customer, 
-    //             'Service: ' + service, 
-    //             'Claim: ' + claim, 
-    //             'Win/Loss: ' + winloss, 
-    //             'Priority: ' + priority,
-    //             'Service Team: ' + serviceteam,
-    //             'User: ' + 'testUser')
     setCustomer('');
     setService('');
     setClaim('');
@@ -386,8 +362,9 @@ function App() {
 
   return (
     <div className="App">
-
-          <div className="signInAndOutDiv">
+          {user? 
+          (<>
+           <div className="signInAndOutDiv">
             {/* Sign out button */}
             <Button
               backgroundColor={tokens.colors.pink[40]}
@@ -747,8 +724,8 @@ function App() {
               </Table>
             </ThemeProvider>
           </div>
-
-
+          </>) : 
+          (<>
           {/* To be shown the user is not signed in */}
           <Alert variation="info">Please sign-in to view the dashboard.</Alert>
           <div className="signInAndOutDiv">
@@ -762,8 +739,8 @@ function App() {
               Sign-In with Midway
             </Button>
           </div>
-
-
+          </>) }
+         
     </div>
   );
 }
