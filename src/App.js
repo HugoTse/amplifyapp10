@@ -644,8 +644,6 @@ function App() {
                           />
                         </TableCell>
                         <TableCell>
-                        {(gobj.user == user.username)? 
-                          (<>
                           <div>
                             <Button
                               loadingText=""
@@ -666,7 +664,6 @@ function App() {
                               Cancel
                             </Button>
                           </div>
-                          </>) : (<></>) }
                         </TableCell>
                       </TableRow>
                       </>):
@@ -698,6 +695,8 @@ function App() {
                         </TableCell>
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
                           {/* If user equals user.username */}
+                          {(gobj.user == user.username)? 
+                          (<>
                           <div>
                             <Button onClick={() => change({gobj})}>EDIT</Button>
                           </div>
@@ -707,6 +706,7 @@ function App() {
                               onDoubleClick={() => deleteGobj({gobj})}
                             />
                           </div> 
+                          </>) : (<></>) }
                         </TableCell>
                       </TableRow> 
                       </>)    
