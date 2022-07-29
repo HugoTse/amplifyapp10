@@ -30,6 +30,8 @@ import { AiTwotoneDelete } from "react-icons/ai";
 import TextareaAutosize from 'react-textarea-autosize';
 import "@aws-amplify/ui-react/styles.css";
 
+import Pagination from './Pagination';
+
 Amplify.configure(config);
 
 function App() {
@@ -361,10 +363,46 @@ function App() {
   //   console.log(user);
   // }
 
+
+  // Pagination (only runs when it mounts)
+  const [posts, setPosts] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  const[currentPage, setCurrentPage] = useState(1);
+  const[postsPerPage, setPostsPerPage] = useState(3);
+  // Pagination useeffect
+  useEffect(() => {
+    async function fetchPosts(){
+      const headers = {
+        "Content-Type": "application, json",
+      }
+      const apiResponse = await fetch('https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v2/read', {headers} )
+      const apiResponseJSON = await apiResponse.json()
+      setPosts(apiResponseJSON.body)
+    }
+    fetchPosts();
+  }, [])
+  // Pagination, change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // console.log(posts);
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+
   return (
+
     <div className="App">
+          
+          
+          {/* {currentPosts.map(post => (
+            <p key={post.id}>{post.id}Hello</p>
+          ))} */}
+
+          <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}></Pagination>
+
           {/* Production Change */}
-          {user? 
+          {!user? 
           (<>
            <div className="signInAndOutDiv">
             {/* Sign out button */}
@@ -425,7 +463,7 @@ function App() {
                   {/* User */}
                   <TableCell>
                       {/* Production */}
-                      {user.username}
+                      {/* {user.username} */}
                       testUser
                     </TableCell>
                   <TableCell>
@@ -433,7 +471,7 @@ function App() {
                     <TextareaAutosize
                         className='responsiveTA'
                         // defaultValue={}
-                        placeholder="..."
+                        placeholder="Type here..."
                         onChange={(e) =>
                           setCustomer(e.target.value)
                         }
@@ -445,7 +483,7 @@ function App() {
                     <TextareaAutosize
                           className='responsiveTA'
                           // defaultValue={}
-                          placeholder="..."
+                          placeholder="Type here..."
                           onChange={(e) =>
                             setService(e.target.value)
                           }
@@ -457,7 +495,7 @@ function App() {
                     <TextareaAutosize
                         className='responsiveTA'
                         // defaultValue={}
-                        placeholder="..."
+                        placeholder="Type here..."
                         onChange={(e) =>
                           setClaim(e.target.value)
                         }
@@ -469,7 +507,7 @@ function App() {
                     <TextareaAutosize
                       className='responsiveTA'
                       // defaultValue={}
-                      placeholder="..."
+                      placeholder="Type here..."
                       onChange={(e) =>
                         setWinloss(e.target.value)
                       }
@@ -509,7 +547,7 @@ function App() {
                     <TextareaAutosize
                       className='responsiveTA'
                       // defaultValue={}
-                      placeholder="..."
+                      placeholder="Type here..."
                       onChange={(e) =>
                         setServiceteam(e.target.value)
                       }
@@ -700,7 +738,7 @@ function App() {
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
                           {/* If user equals user.username */}
                           {/* Production */}
-                          {(gobj.user == user.username)? 
+                          {/* {(gobj.user == user.username)? 
                           (<>
                           <div>
                             <Button onClick={() => change({gobj})}>EDIT</Button>
@@ -711,7 +749,7 @@ function App() {
                               onDoubleClick={() => deleteGobj({gobj})}
                             />
                           </div> 
-                          </>) : (<></>) }
+                          </>) : (<></>) } */}
                         </TableCell>
                       </TableRow> 
                       </>)    

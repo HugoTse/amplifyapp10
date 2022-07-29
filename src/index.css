@@ -82,8 +82,8 @@ code {
 }
 
 .responsiveTA {
-  border: none;
-  border: none;
+  /* border: none; */
+  border-radius: 5px;
   background-color: transparent;
   resize: none;
   outline: none;
