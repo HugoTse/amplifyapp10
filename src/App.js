@@ -24,6 +24,7 @@ import {
   TextAreaField,
   SelectField,
   useTheme,
+  Link
 } from "@aws-amplify/ui-react";
 import { AiTwotoneDelete } from "react-icons/ai";
 import TextareaAutosize from 'react-textarea-autosize';
@@ -148,8 +149,8 @@ function App() {
                                winloss: winloss,
                                priority: priority,
                                serviceteam: serviceteam,
-                               user: user.username
-                              // user: 'testUser'
+                              //  user: user.username
+                              user: 'amazonfederate_hugotp'
                               });
     // create a JSON object with parameters for API call and store in a variable
     var requestOptions = {
@@ -173,6 +174,7 @@ function App() {
     setPriority('');
     setServiceteam('');
     fetchGobjs();
+    setAdding(!adding);
   };
 
 
@@ -359,9 +361,9 @@ function App() {
   //   console.log(user);
   // }
 
-
   return (
     <div className="App">
+          {/* Production Change */}
           {user? 
           (<>
            <div className="signInAndOutDiv">
@@ -422,7 +424,9 @@ function App() {
                 <TableRow>
                   {/* User */}
                   <TableCell>
+                      {/* Production */}
                       {user.username}
+                      testUser
                     </TableCell>
                   <TableCell>
                     {/* Customer */}
@@ -670,7 +674,7 @@ function App() {
                       (<>
                       <TableRow key={gobj.id}>
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
-                          {gobj.user}
+                          <a href={ `https://phonetool.amazon.com/users/${gobj.user.slice(15)}`} target="_blank">{gobj.user.slice(15)}</a>
                           {/* <br/> */}
                           {/* <br/> */}
                           {/* {gobj.created_at.slice(0,-5)} */}
@@ -695,6 +699,7 @@ function App() {
                         </TableCell>
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
                           {/* If user equals user.username */}
+                          {/* Production */}
                           {(gobj.user == user.username)? 
                           (<>
                           <div>
