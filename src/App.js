@@ -179,7 +179,7 @@ function App() {
     fetchGobjs();
     setAdding(!adding);
     // For pagination
-    setCurrentPage(Math.ceil(gobjs.length / postsPerPage ));
+    setCurrentPage(Math.ceil((gobjs.length + 1) / postsPerPage ));
   };
 
 
@@ -407,7 +407,7 @@ function App() {
 
     <div className="App">
           {/* Production Change */}
-          {!user? 
+          {user? 
           (<>
            <div className="signInAndOutDiv">
             {/* Sign out button */}
@@ -422,9 +422,12 @@ function App() {
           
           {/* Pagination Component */}
           {/* <Page postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate} gobjs={gobjs}></Page> */}
-          <p>Showing {indexOfFirstPost + 1} to {(indexOfLastPost > gobjs.length)? gobjs.length : indexOfLastPost} of {gobjs.length} records
-          </p>
+          {(gobjs.length > 0)?  
+          (<>
+          <p>Showing {indexOfFirstPost + 1} to {(indexOfLastPost > gobjs.length)? gobjs.length : indexOfLastPost} of {gobjs.length} rows</p>
           <Page postsPerPage={postsPerPage} totalPosts={gobjs.length} paginate={paginate} gobjs={gobjs}></Page>
+          </>):(<></>)
+          }
 
           <div className="tableDiv">
             <ThemeProvider theme={theme} colorMode="light">
@@ -471,8 +474,8 @@ function App() {
                   {/* User */}
                   <TableCell>
                       {/* Production */}
-                      {/* {user.username.slice(15)} */}
-                      testUser
+                      {user.username.slice(15)}
+                      {/* testUser */}
                     </TableCell>
                   <TableCell>
                     {/* Customer */}
@@ -746,7 +749,7 @@ function App() {
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
                           {/* If user equals user.username */}
                           {/* Production */}
-                          {/* {(gobj.user == user.username)? 
+                          {(gobj.user == user.username)? 
                           (<>
                           <div>
                             <Button onClick={() => change({gobj})}>EDIT</Button>
@@ -757,7 +760,7 @@ function App() {
                               onDoubleClick={() => deleteGobj({gobj})}
                             />
                           </div> 
-                          </>) : (<></>) } */}
+                          </>) : (<></>) }
                         </TableCell>
                       </TableRow> 
                       </>)    
