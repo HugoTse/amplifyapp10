@@ -4,7 +4,7 @@ import React, {
   } from "react";
 
 // const Page = ({ postsPerPage, totalPosts, paginate }) => {
-const Page = ({ postsPerPage, totalPosts, paginate, gobjs }) => {
+const Page = ({ postsPerPage, totalPosts, paginate }) => {
     const pageNumbers = [];
     // const [pageNumbers, setPageNumbers ] = useState('');
     for(let i = 1; i <= Math.ceil(totalPosts / postsPerPage ); i++){
