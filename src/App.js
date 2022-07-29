@@ -371,17 +371,17 @@ function App() {
   const[currentPage, setCurrentPage] = useState(1);
   const[postsPerPage, setPostsPerPage] = useState(10);
   // Pagination useeffect
-  useEffect(() => {
-    async function fetchPosts(){
-      const headers = {
-        "Content-Type": "application, json",
-      }
-      const apiResponse = await fetch('https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v2/read', {headers} )
-      const apiResponseJSON = await apiResponse.json()
-      setPosts(apiResponseJSON.body)
-    }
-    fetchPosts();
-  }, [])
+  // useEffect(() => {
+  //   async function fetchPosts(){
+  //     const headers = {
+  //       "Content-Type": "application, json",
+  //     }
+  //     const apiResponse = await fetch('https://hxk1bvw597.execute-api.us-west-2.amazonaws.com/v2/read', {headers} )
+  //     const apiResponseJSON = await apiResponse.json()
+  //     setPosts(apiResponseJSON.body)
+  //   }
+  //   fetchPosts();
+  // }, [])
   // Pagination, change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   // console.log(posts);
@@ -390,18 +390,14 @@ function App() {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   // const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
   const currentGobjs = gobjs.slice(indexOfFirstPost, indexOfLastPost);
-  
+
 
   return (
 
     <div className="App">
     
-          {/* {currentGobjs.map(post => (
-            <p key={post.id}>{post.id}Hello</p>
-          ))} */}
-
           {/* Production Change */}
-          {user? 
+          {!user? 
           (<>
            <div className="signInAndOutDiv">
             {/* Sign out button */}
@@ -415,7 +411,8 @@ function App() {
           <Heading level={1}>Dashboard</Heading>
           
           {/* Pagination Component */}
-          <Page postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}></Page>
+          {/* <Page postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate} gobjs={gobjs}></Page> */}
+          <Page postsPerPage={postsPerPage} totalPosts={gobjs.length} paginate={paginate} gobjs={gobjs}></Page>
 
           <div className="tableDiv">
             <ThemeProvider theme={theme} colorMode="light">
@@ -462,8 +459,8 @@ function App() {
                   {/* User */}
                   <TableCell>
                       {/* Production */}
-                      {user.username}
-                      {/* testUser */}
+                      {/* {user.username} */}
+                      testUser
                     </TableCell>
                   <TableCell>
                     {/* Customer */}
@@ -737,7 +734,7 @@ function App() {
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
                           {/* If user equals user.username */}
                           {/* Production */}
-                          {(gobj.user == user.username)? 
+                          {/* {(gobj.user == user.username)? 
                           (<>
                           <div>
                             <Button onClick={() => change({gobj})}>EDIT</Button>
@@ -748,7 +745,7 @@ function App() {
                               onDoubleClick={() => deleteGobj({gobj})}
                             />
                           </div> 
-                          </>) : (<></>) }
+                          </>) : (<></>) } */}
                         </TableCell>
                       </TableRow> 
                       </>)    
