@@ -397,7 +397,7 @@ function App() {
     <div className="App">
     
           {/* Production Change */}
-          {!user? 
+          {user? 
           (<>
            <div className="signInAndOutDiv">
             {/* Sign out button */}
@@ -459,8 +459,8 @@ function App() {
                   {/* User */}
                   <TableCell>
                       {/* Production */}
-                      {/* {user.username} */}
-                      testUser
+                      {user.username}
+                      {/* testUser */}
                     </TableCell>
                   <TableCell>
                     {/* Customer */}
@@ -734,7 +734,7 @@ function App() {
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
                           {/* If user equals user.username */}
                           {/* Production */}
-                          {/* {(gobj.user == user.username)? 
+                          {(gobj.user == user.username)? 
                           (<>
                           <div>
                             <Button onClick={() => change({gobj})}>EDIT</Button>
@@ -745,7 +745,7 @@ function App() {
                               onDoubleClick={() => deleteGobj({gobj})}
                             />
                           </div> 
-                          </>) : (<></>) } */}
+                          </>) : (<></>) }
                         </TableCell>
                       </TableRow> 
                       </>)    
