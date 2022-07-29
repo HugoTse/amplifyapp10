@@ -24,13 +24,14 @@ import {
   TextAreaField,
   SelectField,
   useTheme,
-  Link
+  Link,
+  Pagination
 } from "@aws-amplify/ui-react";
 import { AiTwotoneDelete } from "react-icons/ai";
 import TextareaAutosize from 'react-textarea-autosize';
 import "@aws-amplify/ui-react/styles.css";
 
-import Pagination from './Pagination';
+import Page from './Page';
 
 Amplify.configure(config);
 
@@ -368,7 +369,7 @@ function App() {
   const [posts, setPosts] = useState([]);
   // const [loading, setLoading] = useState(false);
   const[currentPage, setCurrentPage] = useState(1);
-  const[postsPerPage, setPostsPerPage] = useState(3);
+  const[postsPerPage, setPostsPerPage] = useState(10);
   // Pagination useeffect
   useEffect(() => {
     async function fetchPosts(){
@@ -387,22 +388,20 @@ function App() {
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
+  // const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentGobjs = gobjs.slice(indexOfFirstPost, indexOfLastPost);
+  
 
   return (
 
     <div className="App">
-          
-          
-          {/* {currentPosts.map(post => (
+    
+          {/* {currentGobjs.map(post => (
             <p key={post.id}>{post.id}Hello</p>
           ))} */}
 
-          <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}></Pagination>
-
           {/* Production Change */}
-          {!user? 
+          {user? 
           (<>
            <div className="signInAndOutDiv">
             {/* Sign out button */}
@@ -414,9 +413,9 @@ function App() {
             </Button>
           </div>
           <Heading level={1}>Dashboard</Heading>
-
-          {/* <button onClick={() => fetchGobjs()}>FETCH</button> */}
-
+          
+          {/* Pagination Component */}
+          <Page postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}></Page>
 
           <div className="tableDiv">
             <ThemeProvider theme={theme} colorMode="light">
@@ -463,8 +462,8 @@ function App() {
                   {/* User */}
                   <TableCell>
                       {/* Production */}
-                      {/* {user.username} */}
-                      testUser
+                      {user.username}
+                      {/* testUser */}
                     </TableCell>
                   <TableCell>
                     {/* Customer */}
@@ -584,7 +583,7 @@ function App() {
                 {
                 (gobjs.length > 0)?  
                 (
-                  gobjs.map((gobj) => (
+                  currentGobjs.map((gobj) => (
                   <>
                   {
                     (gobj.id == editid )?
@@ -738,7 +737,7 @@ function App() {
                         <TableCell fontSize="var(--amplify-font-sizes-small)">
                           {/* If user equals user.username */}
                           {/* Production */}
-                          {/* {(gobj.user == user.username)? 
+                          {(gobj.user == user.username)? 
                           (<>
                           <div>
                             <Button onClick={() => change({gobj})}>EDIT</Button>
@@ -749,7 +748,7 @@ function App() {
                               onDoubleClick={() => deleteGobj({gobj})}
                             />
                           </div> 
-                          </>) : (<></>) } */}
+                          </>) : (<></>) }
                         </TableCell>
                       </TableRow> 
                       </>)    
@@ -769,6 +768,7 @@ function App() {
                 </TableBody>
               </Table>
             </ThemeProvider>
+
           </div>
           </>) : 
           (<>
