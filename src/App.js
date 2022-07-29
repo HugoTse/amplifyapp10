@@ -604,7 +604,7 @@ function App() {
                       <TableRow>
                         {/* User */}
                         <TableCell>
-                          {gobj.user}
+                          {gobj.user.slice(15)}
                             <br/>
                             <br/>
                           </TableCell>
