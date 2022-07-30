@@ -152,8 +152,8 @@ function App() {
                                winloss: winloss,
                                priority: priority,
                                serviceteam: serviceteam,
-                              //  user: user.username
-                              user: 'amazonfederate_hugotp'
+                               user: user.username
+                              // user: 'amazonfederate_hugotp'
                               });
     // create a JSON object with parameters for API call and store in a variable
     var requestOptions = {
