@@ -42,6 +42,7 @@ function App() {
           getUser().then((userData) => setUser(userData));
           // Trying to get the user token
           console.log(user)
+          console.log(user.signInUserSession.accessToken.jwtToken)
           break;
         case "signOut":
           setUser(null);
