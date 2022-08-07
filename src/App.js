@@ -40,6 +40,8 @@ function App() {
           console.log(event);
           console.log(data);
           getUser().then((userData) => setUser(userData));
+          // Trying to get the user token
+          console.log(user)
           break;
         case "signOut":
           setUser(null);
